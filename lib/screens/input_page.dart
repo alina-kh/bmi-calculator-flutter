@@ -1,11 +1,13 @@
-import 'package:bmi_calculator/results_page.dart';
+import 'package:bmi_calculator/screens/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'constants.dart';
-import 'reusable_card.dart';
-import 'card_func.dart';
-import 'icon_content.dart';
-import 'round_icon_button.dart';
+import '../components/constants.dart';
+import '../components/reusable_card.dart';
+import '../components/card_func.dart';
+import '../components/icon_content.dart';
+import '../components/round_icon_button.dart';
+import '../components/bottom_button.dart';
+import '../components/calculator_brain.dart';
 
 enum Gender {
   male,
@@ -36,14 +38,10 @@ class _InputPageState extends State<InputPage> {
               children: <Widget>[
                 Expanded(
                   child: CardFunc(
-                    selectedGender == Gender.male ? kActiveCardColor : kInactiveCardColor,
-                    IconContent(
-                      FontAwesomeIcons.mars,
-                      kIconSize,
-                      kMarginBox,
-                      'МУЖЧИНА',
-                      kSizeText,
-                      kContrastColor,
+                    colour: selectedGender == Gender.male ? kActiveCardColor : kInactiveCardColor,
+                    cardChild: IconContent(
+                      icon: FontAwesomeIcons.mars,
+                      label: 'МУЖЧИНА',
                     ),
                     onPress: () {
                       setState(() {
@@ -54,14 +52,10 @@ class _InputPageState extends State<InputPage> {
                 ),
                 Expanded(
                   child: CardFunc(
-                    selectedGender == Gender.female ? kActiveCardColor : kInactiveCardColor,
-                    IconContent(
-                      FontAwesomeIcons.venus,
-                      kIconSize,
-                      kMarginBox,
-                      'ЖЕНЩИНА',
-                      kSizeText,
-                      kContrastColor,
+                    colour: selectedGender == Gender.female ? kActiveCardColor : kInactiveCardColor,
+                    cardChild: IconContent(
+                      icon: FontAwesomeIcons.venus,
+                      label: 'ЖЕНЩИНА',
                     ),
                     onPress: () {
                       setState(() {
@@ -75,8 +69,8 @@ class _InputPageState extends State<InputPage> {
           ),
           Expanded(
             child: ReusableCard(
-              kActiveCardColor,
-              Column(
+              colour: kActiveCardColor,
+              cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
@@ -127,8 +121,8 @@ class _InputPageState extends State<InputPage> {
               children: <Widget>[
                 Expanded(
                   child: ReusableCard(
-                    kActiveCardColor,
-                    Column(
+                    colour: kActiveCardColor,
+                    cardChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
@@ -165,74 +159,70 @@ class _InputPageState extends State<InputPage> {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
                 Expanded(
-                  child: ReusableCard(
-                    kActiveCardColor,
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'ВОЗРАСТ',
-                          style: kLabelTextStyle,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: ReusableCard(
+                          colour: kActiveCardColor,
+                          cardChild: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'ВОЗРАСТ',
+                                style: kLabelTextStyle,
+                              ),
+                              Text(
+                                age.toString(),
+                                style: kNumberTextStyle,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  RoundIconButton(
+                                    icon: FontAwesomeIcons.minus,
+                                    onPressed: () {
+                                      setState(() {
+                                        age--;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(width: 10.0,),
+                                  RoundIconButton(
+                                    icon: FontAwesomeIcons.plus,
+                                    onPressed: () {
+                                      setState(() {
+                                        age++;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                        Text(
-                          age.toString(),
-                          style: kNumberTextStyle,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            RoundIconButton(
-                              icon: FontAwesomeIcons.minus,
-                              onPressed: () {
-                                setState(() {
-                                  age--;
-                                });
-                              },
-                            ),
-                            SizedBox(width: 10.0,),
-                            RoundIconButton(
-                              icon: FontAwesomeIcons.plus,
-                              onPressed: () {
-                                setState(() {
-                                  age++;
-                                });
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsPage()));
-            },
-            child: Center(
-              child: Container(
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                padding: EdgeInsets.only(bottom: 20.0),
-                height: kBottomContainerHeight,
-                color: kAccentColor,
-                child: Text(
-                  'РАСЧИТАТЬ',
-                  style: kLargeButtonStyle,
-                ),
-              ),
-            ),
-          ),
-        ]
+          BottomButton(
+              onTap: () {
+                CalculatorBrain calc = CalculatorBrain(weight: weight, height: height);
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => ResultsPage(
+                      bmiResult: calc.calculateBIM(),
+                      resultText: calc.getResults(),
+                      interpretation: calc.getIntepretation(),
+                    ),
+                  ),
+                );
+              } ,
+            text: 'Расчитать'),
+        ],
       )
     );
   }

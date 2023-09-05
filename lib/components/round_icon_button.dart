@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../components/constants.dart';
 
 class RoundIconButton extends StatelessWidget {
   RoundIconButton({required this.icon, required this.onPressed});
@@ -16,7 +16,7 @@ class RoundIconButton extends StatelessWidget {
         width: 56.0,
         height: 56.0,
       ),
-      onPressed: onPressed(),
+      onPressed: () => onPressed(),
       shape: CircleBorder(),
       fillColor: kButtonColor,
     );
