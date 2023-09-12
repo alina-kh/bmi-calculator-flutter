@@ -140,7 +140,9 @@ class _InputPageState extends State<InputPage> {
                               icon: FontAwesomeIcons.minus,
                               onPressed: () {
                                 setState(() {
-                                  weight--;
+                                  if(weight > 0) {
+                                    weight--;
+                                  }
                                 });
                               },
                             ),
@@ -149,7 +151,9 @@ class _InputPageState extends State<InputPage> {
                               icon: FontAwesomeIcons.plus,
                               onPressed: () {
                                 setState(() {
-                                  weight++;
+                                  if(weight > 0) {
+                                    weight++;
+                                  }
                                 });
                               },
                             ),
@@ -183,7 +187,9 @@ class _InputPageState extends State<InputPage> {
                                     icon: FontAwesomeIcons.minus,
                                     onPressed: () {
                                       setState(() {
-                                        age--;
+                                        if(age > 0) {
+                                          age--;
+                                        }
                                       });
                                     },
                                   ),
@@ -192,7 +198,9 @@ class _InputPageState extends State<InputPage> {
                                     icon: FontAwesomeIcons.plus,
                                     onPressed: () {
                                       setState(() {
-                                        age++;
+                                        if(age > 0) {
+                                          age++;
+                                        }
                                       });
                                     },
                                   ),
